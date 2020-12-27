@@ -8,7 +8,7 @@ import {Color} from 'ngx-color';
 })
 export class InputFormComponent implements OnInit {
 
-  color = '#ffaacc';
+  color = '#aa0033';
   isOpened = false;
 
   constructor() { }

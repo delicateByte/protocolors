@@ -8,8 +8,11 @@
         <p class="help">enter / choose your primary color</p>
       </div>
     </div>
-    <div  *ngIf="isOpened" class="overlay" (click)="closePicker()">
-      <color-sketch width="20rem" (click)="$event.stopPropagation();" disableAlpha="true" [color]="color" (onChange)="change($event)"></color-sketch>
+    <div *ngIf="isOpened" class="overlay" (click)="closePicker()">
+      <div class="is-fixed-centered">
+        <div class="color-preview" [style.background-color]="color"></div>
+        <color-sketch width="20rem" (click)="$event.stopPropagation();" disableAlpha="true" [color]="color" (onChange)="change($event)"></color-sketch>
+      </div>
     </div>
   </div>
 </div>
