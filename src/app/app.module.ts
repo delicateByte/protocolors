@@ -3,14 +3,18 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { InputFormComponent } from './input-form/input-form.component';
+import {ColorSketchModule} from 'ngx-color/sketch';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    InputFormComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ColorSketchModule
   ],
   providers: [],
   bootstrap: [AppComponent]
