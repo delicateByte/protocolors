@@ -4,7 +4,8 @@ import { ColorCalculatorService } from './color-calculator.service';
 
 describe('ColorCalculatorService', () => {
   let service: ColorCalculatorService;
-  const originalColor = new ColorObj([254, 0, 0]);
+  let originalColor = '#00000';
+
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ColorCalculatorService);
@@ -13,9 +14,17 @@ describe('ColorCalculatorService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+   // TODO: OFF BY ONE Rounding Error
   it('should return complementary Color', () => {
+    originalColor = '#407782';
     return service.calculateComplementary(originalColor).then((result) => {
-      expect(result.rgb).toEqual([1, 255, 255]);
+      expect(result).toEqual('#824b40');
+    });
+  });
+  it('should return multiple lighter Shades', () => {
+    originalColor = '#50ff61';
+    return service.calculateMultipleLighterShades(5, originalColor).then((result) => {
+      expect(result).toEqual([ '#8fff93', '#c8ffc6', '#fffffb', '#ffffff', '#ffffff' ]);
     });
   });
 });
