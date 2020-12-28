@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { color } from 'color';
-// const Color = require('color');
-import { ColorObj } from '../../classes/ColorObj/color-obj';
+import * as chroma from 'chroma.ts';
+// import {from, Observable} from 'rxjs';
+// const observable = from(Promise);
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +10,24 @@ export class ColorCalculatorService {
 
   constructor() { }
 
-  calculateComplementary(originalColor: ColorObj): Promise<ColorObj>{
+  calculateComplementary(originalColor): Promise<string> {
 
-    return new  Promise<ColorObj>((resolve) => {
-      const colorMax = 255;
-      const complemenatryColor = new ColorObj([colorMax, colorMax, colorMax]);
-      // Find Complementary Red
-      complemenatryColor.rgb[0] = complemenatryColor.rgb[0] - originalColor.rgb[0];
-      // Find Complementary Green
-      complemenatryColor.rgb[1] = complemenatryColor.rgb[1] - originalColor.rgb[1];
-      // Find Complementary Blue
-      complemenatryColor.rgb[2] = complemenatryColor.rgb[2] - originalColor.rgb[2];
-      resolve(complemenatryColor);
+    return new Promise<string>((resolve) => {
+      const hslOriginalColor = chroma.color(originalColor).hsl();
+      hslOriginalColor[0] = hslOriginalColor[0] + 180.0;
+      resolve(chroma.color(hslOriginalColor, 'hsl').hex('rgb'));
     });
-
   }
+    calculateMultipleLighterShades(numberOfShades, originalColor): Promise<Array<string>>{
+      return new Promise<Array<string>>((resolve) => {
+        const hslOriginalColor = chroma.color(originalColor);
+        const lighterColors = [];
+        for (let i = 0; i < numberOfShades; i++){
+          const lighterColor = hslOriginalColor.brighter(i + 1 );
+          lighterColors.push(chroma.color(lighterColor).hex('rgb'));
+        }
+        resolve(lighterColors);
+      });
+  }
+
 }
