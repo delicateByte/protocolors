@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { InputFormComponent } from './input-form/input-form.component';
 import {ColorSketchModule} from 'ngx-color/sketch';
 import { OutputBoxComponent } from './output-box/output-box.component';
+import { OutputColorComponent } from './output-color/output-color.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InputFormComponent,
-    OutputBoxComponent
+    OutputBoxComponent,
+    OutputColorComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ColorCalculatorService} from '../../services/colorCalculator/color-calculator.service';
 
 @Component({
   selector: 'app-output-box',
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OutputBoxComponent implements OnInit {
 
-  constructor() { }
+  constructor(private colorCalculatorService: ColorCalculatorService) {
+  }
 
   ngOnInit(): void {
   }
