@@ -1,33 +1,35 @@
 import { Injectable } from '@angular/core';
 import * as chroma from 'chroma.ts';
-// import {from, Observable} from 'rxjs';
-// const observable = from(Promise);
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ColorCalculatorService {
 
-  constructor() { }
+  constructor(originalColor: string) {
+    this.complementaryColor = new Observable<string>((observer) => {
+      observer.next(this.calculateComplementary(originalColor)); });
+    this.multipleLighterShades = new Observable<Array<string>>((observer) => {
+      observer.next(this.calculateMultipleLighterShades(3, originalColor)); });
 
-  calculateComplementary(originalColor): Promise<string> {
-
-    return new Promise<string>((resolve) => {
-      const hslOriginalColor = chroma.color(originalColor).hsl();
-      hslOriginalColor[0] = hslOriginalColor[0] + 180.0;
-      resolve(chroma.color(hslOriginalColor, 'hsl').hex('rgb'));
-    });
   }
-    calculateMultipleLighterShades(numberOfShades, originalColor): Promise<Array<string>>{
-      return new Promise<Array<string>>((resolve) => {
-        const hslOriginalColor = chroma.color(originalColor);
-        const lighterColors = [];
-        for (let i = 0; i < numberOfShades; i++){
-          const lighterColor = hslOriginalColor.brighter(i + 1 );
-          lighterColors.push(chroma.color(lighterColor).hex('rgb'));
-        }
-        resolve(lighterColors);
-      });
+  complementaryColor: Observable<string>;
+  multipleLighterShades: Observable<Array<string>>;
+calculateComplementary(originalColor): string {
+    const hslOriginalColor = chroma.color(originalColor).hsl();
+    hslOriginalColor[0] = hslOriginalColor[0] + 180.0;
+    return chroma.color(hslOriginalColor, 'hsl').hex('rgb');
+  }
+
+calculateMultipleLighterShades(numberOfShades, originalColor): Array <string> {
+  const hslOriginalColor = chroma.color(originalColor);
+  const lighterColors = [];
+  for (let i = 0; i < numberOfShades; i++){
+    const lighterColor = hslOriginalColor.brighter(i + 1 );
+    lighterColors.push(chroma.color(lighterColor).hex('rgb'));
+  }
+  return lighterColors;
   }
 
 }

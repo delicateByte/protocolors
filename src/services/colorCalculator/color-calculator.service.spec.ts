@@ -17,9 +17,8 @@ describe('ColorCalculatorService', () => {
    // TODO: OFF BY ONE Rounding Error
   it('should return complementary Color', () => {
     originalColor = '#407782';
-    return service.calculateComplementary(originalColor).then((result) => {
-      expect(result).toEqual('#824b40');
-    });
+    return expect(service.calculateComplementary(originalColor)).toEqual('#824b40');
+    );
   });
   it('should return multiple lighter Shades', () => {
     originalColor = '#50ff61';
