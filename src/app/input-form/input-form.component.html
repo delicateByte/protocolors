@@ -14,9 +14,9 @@
     </div>
   </div>
 </section>
-<div *ngIf="isOpened" class="overlay" (click)="closePicker()">
+<div *ngIf="isOpened" class="overlay" (mousedown)="closePicker()">
   <div class="is-fixed-centered">
-    <div class="color-preview" [style.background-color]="color"></div>
-    <color-sketch width="20rem" (click)="$event.stopPropagation();" disableAlpha="true" [color]="color" (onChange)="change($event)"></color-sketch>
+    <div class="color-preview" (mousedown)="$event.stopPropagation();" [style.background-color]="color"></div>
+    <color-sketch width="20rem" (mousedown)="$event.stopPropagation();" disableAlpha="true" [color]="color" (onChange)="change($event)"></color-sketch>
   </div>
 </div>
