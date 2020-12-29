@@ -9,15 +9,19 @@
 
 div.color-preview
   border-radius: 50%
-  height: 20vh
-  width: 20vh
-  margin: 2rem auto
-  box-shadow: inset #0007 0 0 1rem 0.5rem, #0009 0.5rem 0.5rem 1rem
-  border: 0.5vh solid #fff
+  height: 4vh
+  width: 4vh
+  box-shadow: inset #0007 0 0 0.25rem 0.125rem, #0009 0.125rem 0.125rem 0.25rem
+  border: 0.25vh solid #fff
+  transition: transform 0.3s
 
-div.is-fixed-centered
+  &.is-enlarged
+    transform: scale(5)
+    z-index: 1111
+
+.is-relative
+  position: relative
+
+div.colorPicker
   position: absolute
-  left: 50%
-  top: 50%
-  transform: translate(-50%, -50%)
-
+  z-index: 10
