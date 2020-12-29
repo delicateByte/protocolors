@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { ColorObj} from '../../classes/ColorObj/color-obj';
 import { ColorCalculatorService } from './color-calculator.service';
 
 describe('ColorCalculatorService', () => {
@@ -18,12 +17,13 @@ describe('ColorCalculatorService', () => {
   it('should return complementary Color', () => {
     originalColor = '#407782';
     return expect(service.calculateComplementary(originalColor)).toEqual('#824b40');
-    );
   });
   it('should return multiple lighter Shades', () => {
     originalColor = '#50ff61';
-    return service.calculateMultipleLighterShades(5, originalColor).then((result) => {
-      expect(result).toEqual([ '#8fff93', '#c8ffc6', '#fffffb', '#ffffff', '#ffffff' ]);
-    });
+      expect(service.calculateMultipleLighterShades(5, originalColor)).toEqual([ '#8fff93', '#c8ffc6', '#fffffb', '#ffffff', '#ffffff' ]);
+  });
+  it('should return multiple darker Shades', () => {
+    originalColor = '#50ff61';
+      expect(service.calculateMultipleDarkerShades( 5, originalColor)).toEqual([ '#00ca2d', '#009800', '#006700', '#003a00', '#002000' ]);
   });
 });
