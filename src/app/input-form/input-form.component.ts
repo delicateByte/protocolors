@@ -5,7 +5,6 @@ import {
   style,
   animate,
   transition,
-  // ...
 } from '@angular/animations';
 
 @Component({
@@ -45,11 +44,8 @@ import {
 })
 export class InputFormComponent implements OnInit {
 
-  @ViewChild('preview') preview: ElementRef;
-
   color = '#aa0033';
   isOpened = false;
-
 
   constructor() { }
 
