@@ -9,19 +9,22 @@
 
 div.color-preview
   border-radius: 50%
-  height: 4vh
-  width: 4vh
-  box-shadow: inset #0007 0 0 0.25rem 0.125rem, #0009 0.125rem 0.125rem 0.25rem
-  border: 0.25vh solid #fff
-  transition: transform 0.3s
-
-  &.is-enlarged
-    transform: scale(5)
-    z-index: 1111
+  height: 2.5rem
+  width: 2.5rem
+  box-shadow: inset #0009 0 0 0.25rem 0.1rem, #0009 0.125rem 0.125rem 0.25rem
+  border: 0.15rem solid #fff
+  z-index: 6
+  position: relative
+  margin: 0 auto
 
 .is-relative
   position: relative
 
 div.colorPicker
   position: absolute
-  z-index: 10
+  margin: 0 auto
+  z-index: 5
+
+div.colorPickerWrapper
+  width: 1px
+  margin: 0 auto

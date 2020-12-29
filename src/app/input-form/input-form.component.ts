@@ -13,12 +13,26 @@ import {
   templateUrl: './input-form.component.html',
   styleUrls: ['./input-form.component.sass'],
   animations: [
-    trigger('enlarge', [
+    trigger('showPicker', [
       state('small', style({
-        transform: 'translate(-45%, -55%) scale(0) '
+        transform: 'translate(-50%, -60%) scale(0) rotate(30deg)'
       })),
       state('enlarged', style({
-        transform: 'translate(-50%, 25%) scale(1) '
+        transform: 'translate(-50%, 30%) scale(1) '
+      })),
+      transition('small => enlarged', [
+        animate('0.3s ease')
+      ]),
+      transition('enlarged => small', [
+        animate('0.3s ease')
+      ]),
+    ]),
+    trigger('enlarge', [
+      state('small', style({
+        transform: 'scale(1)',
+      })),
+      state('enlarged', style({
+        transform: 'scale(5)',
       })),
       transition('small => enlarged', [
         animate('0.3s ease')
@@ -48,8 +62,6 @@ export class InputFormComponent implements OnInit {
 
   togglePicker(e): void{
     this.isOpened = !this.isOpened;
-    const el = this.preview.nativeElement;
-    el.classList.toggle('is-enlarged');
   }
 
   closePicker(): void{
