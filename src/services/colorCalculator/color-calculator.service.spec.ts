@@ -26,4 +26,12 @@ describe('ColorCalculatorService', () => {
     originalColor = '#50ff61';
       expect(service.calculateMultipleDarkerShades( 5, originalColor)).toEqual([ '#00ca2d', '#009800', '#006700', '#003a00', '#002000' ]);
   });
+  it('should return shade of gray', () => {
+    originalColor = '#50ff61';
+    expect(service.calculateShadeOfGray(  originalColor)).toEqual( '#d9e2d8' );
+  });
+  it('should return white with a tint of the presented color', () => {
+    originalColor = '#0bd620';
+    expect(service.calculateWhiteWithTint(originalColor)).toEqual( '#ddfde0' );
+  });
 });
