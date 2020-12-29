@@ -6,16 +6,23 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ColorCalculatorService {
+  complementaryColor: Observable<string>;
+  multipleLighterShades: Observable<Array<string>>;
+  multipleDarkerShades: Observable<Array<string>>;
+  constructor() {
 
-  constructor(originalColor: string) {
+  }
+
+  generateColorPalette(originalColor: string){
     this.complementaryColor = new Observable<string>((observer) => {
       observer.next(this.calculateComplementary(originalColor)); });
     this.multipleLighterShades = new Observable<Array<string>>((observer) => {
       observer.next(this.calculateMultipleLighterShades(3, originalColor)); });
-
+    this.multipleDarkerShades = new Observable<Array<string>>((observer) => {
+      observer.next(this.calculateMultipleDarkerShades(3, originalColor)); });
   }
-  complementaryColor: Observable<string>;
-  multipleLighterShades: Observable<Array<string>>;
+
+
 calculateComplementary(originalColor): string {
     const hslOriginalColor = chroma.color(originalColor).hsl();
     hslOriginalColor[0] = hslOriginalColor[0] + 180.0;
@@ -31,5 +38,13 @@ calculateMultipleLighterShades(numberOfShades, originalColor): Array <string> {
   }
   return lighterColors;
   }
-
+  calculateMultipleDarkerShades(numberOfShades, originalColor): Array <string> {
+    const hslOriginalColor = chroma.color(originalColor);
+    const darkerColors = [];
+    for (let i = 0; i < numberOfShades; i++){
+      const darkerColor = hslOriginalColor.darker(i + 1 );
+      darkerColors.push(chroma.color(darkerColor).hex('rgb'));
+    }
+    return darkerColors;
+  }
 }
