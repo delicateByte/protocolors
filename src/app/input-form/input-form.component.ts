@@ -1,11 +1,5 @@
-import {Component, OnInit, HostBinding, ViewChild, ElementRef} from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-} from '@angular/animations';
+import {Component, OnInit} from '@angular/core';
+import {animate, state, style, transition, trigger,} from '@angular/animations';
 import {ColorCalculatorService} from '../../services/colorCalculator/color-calculator.service';
 
 @Component({
@@ -50,7 +44,9 @@ export class InputFormComponent implements OnInit {
   constructor(private colorCalculatorService: ColorCalculatorService) { }
 
   ngOnInit(): void {
-    this.colorCalculatorService.generateColorPalette(this.color);
+    setTimeout(() => { // done asynchronously so the output color components have time to subscribe first
+      this.colorCalculatorService.generateColorPalette(this.color);
+    }, 100);
   }
 
   change(event: any): void {
@@ -58,11 +54,11 @@ export class InputFormComponent implements OnInit {
     this.colorCalculatorService.generateColorPalette(this.color);
   }
 
-  togglePicker(e): void{
+  togglePicker(e): void {
     this.isOpened = !this.isOpened;
   }
 
-  closePicker(): void{
+  closePicker(): void {
     this.isOpened = false;
   }
 }
