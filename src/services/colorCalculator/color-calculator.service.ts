@@ -100,9 +100,7 @@ export class ColorCalculatorService {
 
   calculateTriadic(originalColor): void {
     const triadicLeft = chroma.color(originalColor).hsl();
-    ;
     const triadicRight = chroma.color(originalColor).hsl();
-    ;
     triadicLeft[0] = triadicLeft[0] - 120;
     triadicRight[0] = triadicRight[0] + 120;
     this.subjects.triadicLeft.next(chroma.color(triadicLeft, 'hsl').hex('rgb'));
