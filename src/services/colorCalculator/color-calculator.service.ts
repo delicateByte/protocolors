@@ -1,65 +1,77 @@
 import { Injectable } from '@angular/core';
 import * as chroma from 'chroma.ts';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ColorCalculatorService {
-  complementaryColor: Observable<string>;
-  shadeOfGray: Observable<string>;
-  multipleLighterShades: Observable<Array<string>>;
-  multipleDarkerShades: Observable<Array<string>>;
+  complementaryColor: Subject<string>;
+  offGray: Subject<string>;
+  offWhite: Subject<string>;
+
   constructor() {
-
+    this.complementaryColor = new Subject<string>();
+    this.offGray = new Subject<string>();
+    this.offWhite = new Subject<string>();
   }
 
-  generateColorPalette(originalColor: string){
-    this.complementaryColor = new Observable<string>((observer) => {
-      observer.next(this.calculateComplementary(originalColor)); });
-    this.multipleLighterShades = new Observable<Array<string>>((observer) => {
-      observer.next(this.calculateMultipleLighterShades(3, originalColor)); });
-    this.multipleDarkerShades = new Observable<Array<string>>((observer) => {
-      observer.next(this.calculateMultipleDarkerShades(3, originalColor)); });
-    this.shadeOfGray = new Observable<string>((observer) => {
-      observer.next(this.calculateShadeOfGray( originalColor)); });
+  generateColorPalette(originalColor: string): void {
+    this.calculateComplementary(originalColor);
+    this.calculateShadeOfGray(originalColor);
+    this.calculateWhiteWithTint(originalColor);
   }
 
-calculateShadeOfGray(originalColor):string{
-  let grayColor ="";
-  let lastColor="";
-  for(let i =0;i<10;i++){
-    let currentColor=chroma.color(originalColor).desaturate(i).hex();
-    if (currentColor ==lastColor && lastColor != "" ){
-      grayColor =chroma.color(originalColor).desaturate(i-2).hex();
-      break;
-    }else{
-      lastColor =currentColor;
+  getSubject(identifier: string): Subject<string>{
+    switch (identifier){
+      case 'complementary':
+        return this.complementaryColor;
+      case 'offGray':
+        return this.offGray;
+      case 'offWhite':
+        return this.offWhite;
+      default:
+        return this.complementaryColor;
     }
   }
-  return grayColor;
-}
-calculateWhiteWithTint(originalColor):string{
-  const hslOriginalColor = chroma.color(originalColor).hsl();
-  hslOriginalColor[2] = 0.93;
-  return chroma.color(hslOriginalColor, 'hsl').hex('rgb');
-}
 
-calculateComplementary(originalColor): string {
+  calculateShadeOfGray(originalColor): void{
+    let grayColor = '';
+    let lastColor = '';
+    for (let i = 0; i < 10; i++){
+      const currentColor = chroma.color(originalColor).desaturate(i).hex();
+      if (currentColor === lastColor && lastColor !== '' ){
+        grayColor = chroma.color(originalColor).desaturate(i - 2).hex();
+        break;
+      }else{
+        lastColor = currentColor;
+      }
+    }
+    this.offGray.next(grayColor);
+  }
+
+  calculateWhiteWithTint(originalColor): void{
+    const hslOriginalColor = chroma.color(originalColor).hsl();
+    hslOriginalColor[2] = 0.93;
+    this.offWhite.next(chroma.color(hslOriginalColor, 'hsl').hex('rgb'));
+  }
+
+  calculateComplementary(originalColor): void {
     const hslOriginalColor = chroma.color(originalColor).hsl();
     hslOriginalColor[0] = hslOriginalColor[0] + 180.0;
-    return chroma.color(hslOriginalColor, 'hsl').hex('rgb');
+    this.complementaryColor.next(chroma.color(hslOriginalColor, 'hsl').hex('rgb'));
   }
 
-calculateMultipleLighterShades(numberOfShades, originalColor): Array <string> {
-  const hslOriginalColor = chroma.color(originalColor);
-  const lighterColors = [];
-  for (let i = 0; i < numberOfShades; i++){
-    const lighterColor = hslOriginalColor.brighter(i + 1 );
-    lighterColors.push(chroma.color(lighterColor).hex('rgb'));
+  calculateMultipleLighterShades(numberOfShades, originalColor): Array <string> {
+    const hslOriginalColor = chroma.color(originalColor);
+    const lighterColors = [];
+    for (let i = 0; i < numberOfShades; i++){
+      const lighterColor = hslOriginalColor.brighter(i + 1 );
+      lighterColors.push(chroma.color(lighterColor).hex('rgb'));
+    }
+    return lighterColors;
   }
-  return lighterColors;
-  }
+
   calculateMultipleDarkerShades(numberOfShades, originalColor): Array <string> {
     const hslOriginalColor = chroma.color(originalColor);
     const darkerColors = [];

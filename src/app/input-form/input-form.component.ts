@@ -6,6 +6,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import {ColorCalculatorService} from '../../services/colorCalculator/color-calculator.service';
 
 @Component({
   selector: 'app-input-form',
@@ -43,17 +44,18 @@ import {
   ]
 })
 export class InputFormComponent implements OnInit {
-
   color = '#aa0033';
   isOpened = false;
 
-  constructor() { }
+  constructor(private colorCalculatorService: ColorCalculatorService) { }
 
   ngOnInit(): void {
+    this.colorCalculatorService.generateColorPalette(this.color);
   }
 
   change(event: any): void {
     this.color = event.color.hex;
+    this.colorCalculatorService.generateColorPalette(this.color);
   }
 
   togglePicker(e): void{
