@@ -39,7 +39,7 @@ export class ColorCalculatorService {
   calculateShadeOfGray(originalColor): void {
     let grayColor = '';
     let lastColor = '';
-    for (let i = 0; i < 10; i++) {
+    /*for (let i = 0; i < 10; i++) {
       const currentColor = chroma.color(originalColor).desaturate(i).hex();
       if (currentColor === lastColor && lastColor !== '') {
         grayColor = chroma.color(originalColor).desaturate(i - 2).hex();
@@ -47,13 +47,18 @@ export class ColorCalculatorService {
       } else {
         lastColor = currentColor;
       }
-    }
+    }*/
+    const hslColor = chroma.color(originalColor).hsl();
+    hslColor[1] = 0.05;
+    hslColor[2] = 0.5;
+    grayColor = chroma.color(hslColor, 'hsl').hex('rgb');
     this.subjects.offGray.next(grayColor);
   }
 
-  calculateWhiteWithTint(originalColor): void{
+  calculateWhiteWithTint(originalColor): void {
     const hslOriginalColor = chroma.color(originalColor).hsl();
-    hslOriginalColor[2] = 0.93;
+    hslOriginalColor[1] = 0.2;
+    hslOriginalColor[2] = 0.9;
     this.subjects.offWhite.next(chroma.color(hslOriginalColor, 'hsl').hex('rgb'));
   }
 
