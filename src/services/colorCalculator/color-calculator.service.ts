@@ -25,6 +25,8 @@ export class ColorCalculatorService {
     this.subjects.triadicRight = new Subject<string>();
     this.subjects.analogousLeft = new Subject<string>();
     this.subjects.analogousRight = new Subject<string>();
+    this.subjects.text = new Subject<string>();
+    this.subjects.heading = new Subject<string>();
   }
 
   generateColorPalette(originalColor: string): void {
@@ -35,6 +37,7 @@ export class ColorCalculatorService {
     this.calculateMultipleLighterShades(3, originalColor);
     this.calculateTriadic(originalColor);
     this.calculateAnalogous(originalColor);
+    this.calculateTextAndHeading(originalColor);
     this.subjects.primary.next(originalColor);
   }
 
@@ -115,5 +118,16 @@ export class ColorCalculatorService {
     analogousRight[0] = analogousRight[0] + spacing;
     this.subjects.analogousLeft.next(chroma.color(analogousLeft, 'hsl').hex('rgb'));
     this.subjects.analogousRight.next(chroma.color(analogousRight, 'hsl').hex('rgb'));
+  }
+
+  calculateTextAndHeading(originalColor): void {
+    const text = chroma.color(originalColor).hsl();
+    const heading = chroma.color(originalColor).hsl();
+    text[1] = 0.05;
+    text[2] = 0.18;
+    heading[1] = 0.05;
+    heading[2] = 0.12;
+    this.subjects.text.next(chroma.color(text, 'hsl').hex('rgb'));
+    this.subjects.heading.next(chroma.color(heading, 'hsl').hex('rgb'));
   }
 }
