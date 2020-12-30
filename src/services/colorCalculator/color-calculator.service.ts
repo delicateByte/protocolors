@@ -21,6 +21,10 @@ export class ColorCalculatorService {
     this.subjects.offGray = new Subject<string>();
     this.subjects.offWhite = new Subject<string>();
     this.subjects.complementary = new Subject<string>();
+    this.subjects.triadicLeft = new Subject<string>();
+    this.subjects.triadicRight = new Subject<string>();
+    this.subjects.analogousLeft = new Subject<string>();
+    this.subjects.analogousRight = new Subject<string>();
   }
 
   generateColorPalette(originalColor: string): void {
@@ -29,6 +33,8 @@ export class ColorCalculatorService {
     this.calculateWhiteWithTint(originalColor);
     this.calculateMultipleDarkerShades(3, originalColor);
     this.calculateMultipleLighterShades(3, originalColor);
+    this.calculateTriadic(originalColor);
+    this.calculateAnalogous(originalColor);
     this.subjects.primary.next(originalColor);
   }
 
@@ -38,8 +44,8 @@ export class ColorCalculatorService {
 
   calculateShadeOfGray(originalColor): void {
     let grayColor = '';
-    let lastColor = '';
-    /*for (let i = 0; i < 10; i++) {
+    /*let lastColor = '';
+    for (let i = 0; i < 10; i++) {
       const currentColor = chroma.color(originalColor).desaturate(i).hex();
       if (currentColor === lastColor && lastColor !== '') {
         grayColor = chroma.color(originalColor).desaturate(i - 2).hex();
@@ -90,5 +96,26 @@ export class ColorCalculatorService {
     this.subjects.primaryDark.next(darkerColors[0]);
     this.subjects.primaryDarker.next(darkerColors[1]);
     this.subjects.primaryDarkest.next(darkerColors[2]);
+  }
+
+  calculateTriadic(originalColor): void {
+    const triadicLeft = chroma.color(originalColor).hsl();
+    ;
+    const triadicRight = chroma.color(originalColor).hsl();
+    ;
+    triadicLeft[0] = triadicLeft[0] - 120;
+    triadicRight[0] = triadicRight[0] + 120;
+    this.subjects.triadicLeft.next(chroma.color(triadicLeft, 'hsl').hex('rgb'));
+    this.subjects.triadicRight.next(chroma.color(triadicRight, 'hsl').hex('rgb'));
+  }
+
+  calculateAnalogous(originalColor): void {
+    const analogousLeft = chroma.color(originalColor).hsl();
+    const analogousRight = chroma.color(originalColor).hsl();
+    const spacing = 45;
+    analogousLeft[0] = analogousLeft[0] - spacing;
+    analogousRight[0] = analogousRight[0] + spacing;
+    this.subjects.analogousLeft.next(chroma.color(analogousLeft, 'hsl').hex('rgb'));
+    this.subjects.analogousRight.next(chroma.color(analogousRight, 'hsl').hex('rgb'));
   }
 }
